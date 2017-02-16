@@ -22,14 +22,24 @@ void MyPrimitive::CompileObject(vector3 a_v3Color)
 //This will make the triang A->B->C and then the triang C->B->D
 void MyPrimitive::AddQuad(vector3 a_vBottomLeft, vector3 a_vBottomRight, vector3 a_vTopLeft, vector3 a_vTopRight)
 {
+	AddTri(a_vBottomLeft, a_vBottomRight, a_vTopLeft);
+	/*AddVertexPosition(a_vBottomLeft);
+	AddVertexPosition(a_vBottomRight);
+	AddVertexPosition(a_vTopLeft);*/
+
+	AddTri(a_vTopLeft, a_vBottomRight, a_vTopRight);
+	/*AddVertexPosition(a_vTopLeft);
+	AddVertexPosition(a_vBottomRight);
+	AddVertexPosition(a_vTopRight);*/
+}
+
+void MyPrimitive::AddTri(vector3 a_vBottomLeft, vector3 a_vBottomRight, vector3 a_vTop)
+{
 	AddVertexPosition(a_vBottomLeft);
 	AddVertexPosition(a_vBottomRight);
-	AddVertexPosition(a_vTopLeft);
-
-	AddVertexPosition(a_vTopLeft);
-	AddVertexPosition(a_vBottomRight);
-	AddVertexPosition(a_vTopRight);
+	AddVertexPosition(a_vTop);
 }
+
 void MyPrimitive::GeneratePlane(float a_fSize, vector3 a_v3Color)
 {
 	if (a_fSize < 0.01f)
@@ -110,16 +120,19 @@ void MyPrimitive::GenerateCone(float a_fRadius, float a_fHeight, int a_nSubdivis
 	Init();
 
 	//Your code starts here
-	float fValue = 0.5f;
-	//3--2
-	//|  |
-	//0--1
-	vector3 point0(-fValue, -fValue, fValue); //0
-	vector3 point1(fValue, -fValue, fValue); //1
-	vector3 point2(fValue, fValue, fValue); //2
-	vector3 point3(-fValue, fValue, fValue); //3
 
-	AddQuad(point0, point1, point3, point2);
+	vector3 base(0, 0, 0);
+	vector3 peak(0, a_fHeight, 0);
+	float degree = (360.0 / static_cast<float>(a_nSubdivisions)) * PI/180;
+
+	for (int i = 0; i < a_nSubdivisions; i++) {
+		vector3 point1(cos(degree * i), 0, sin(degree * i));
+		vector3 point2(cos(degree * (i+1)), 0, sin(degree * (i+1)));
+
+		AddTri(point1, base, point2);
+
+		AddTri(point1, point2, peak);
+	}
 
 	//Your code ends here
 	CompileObject(a_v3Color);
@@ -135,16 +148,21 @@ void MyPrimitive::GenerateCylinder(float a_fRadius, float a_fHeight, int a_nSubd
 	Init();
 
 	//Your code starts here
-	float fValue = 0.5f;
-	//3--2
-	//|  |
-	//0--1
-	vector3 point0(-fValue, -fValue, fValue); //0
-	vector3 point1(fValue, -fValue, fValue); //1
-	vector3 point2(fValue, fValue, fValue); //2
-	vector3 point3(-fValue, fValue, fValue); //3
+	
+	vector3 base(0, 0, 0);
+	vector3 peak(0, a_fHeight, 0);
+	float degree = (360.0 / static_cast<float>(a_nSubdivisions)) * PI / 180;
 
-	AddQuad(point0, point1, point3, point2);
+	for (int i = 0; i < a_nSubdivisions; i++) {
+		vector3 point1(cos(degree * i), 0, sin(degree * i));
+		vector3 point2(cos(degree * (i + 1)), 0, sin(degree * (i + 1)));
+		vector3 point3(cos(degree * i), a_fHeight, sin(degree * i));
+		vector3 point4(cos(degree * (i + 1)), a_fHeight, sin(degree * (i + 1)));
+
+		AddTri(point1, point2, base);
+		AddTri(point3, peak, point4);
+		AddQuad(point3, point4, point1, point2);
+	}
 
 	//Your code ends here
 	CompileObject(a_v3Color);
