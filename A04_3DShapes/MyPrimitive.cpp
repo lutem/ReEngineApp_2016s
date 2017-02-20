@@ -126,8 +126,8 @@ void MyPrimitive::GenerateCone(float a_fRadius, float a_fHeight, int a_nSubdivis
 	float degree = (360.0 / static_cast<float>(a_nSubdivisions)) * PI/180;
 
 	for (int i = 0; i < a_nSubdivisions; i++) {
-		vector3 point1(cos(degree * i), 0, sin(degree * i));
-		vector3 point2(cos(degree * (i+1)), 0, sin(degree * (i+1)));
+		vector3 point1(cos(degree * i) * a_fRadius, 0, sin(degree * i) * a_fRadius);
+		vector3 point2(cos(degree * (i+1)) * a_fRadius, 0, sin(degree * (i+1)) * a_fRadius);
 
 		AddTri(point1, base, point2);
 
@@ -154,10 +154,10 @@ void MyPrimitive::GenerateCylinder(float a_fRadius, float a_fHeight, int a_nSubd
 	float degree = (360.0 / static_cast<float>(a_nSubdivisions)) * PI / 180;
 
 	for (int i = 0; i < a_nSubdivisions; i++) {
-		vector3 point1(cos(degree * i), 0, sin(degree * i));
-		vector3 point2(cos(degree * (i + 1)), 0, sin(degree * (i + 1)));
-		vector3 point3(cos(degree * i), a_fHeight, sin(degree * i));
-		vector3 point4(cos(degree * (i + 1)), a_fHeight, sin(degree * (i + 1)));
+		vector3 point1(cos(degree * i)  * a_fRadius, 0, sin(degree * i)  * a_fRadius);
+		vector3 point2(cos(degree * (i + 1))  * a_fRadius, 0, sin(degree * (i + 1))  * a_fRadius);
+		vector3 point3(cos(degree * i) * a_fRadius, a_fHeight, sin(degree * i) * a_fRadius);
+		vector3 point4(cos(degree * (i + 1)) * a_fRadius, a_fHeight, sin(degree * (i + 1)) * a_fRadius);
 
 		AddTri(point1, point2, base);
 		AddTri(point3, peak, point4);
@@ -178,16 +178,26 @@ void MyPrimitive::GenerateTube(float a_fOuterRadius, float a_fInnerRadius, float
 	Init();
 
 	//Your code starts here
-	float fValue = 0.5f;
-	//3--2
-	//|  |
-	//0--1
-	vector3 point0(-fValue, -fValue, fValue); //0
-	vector3 point1(fValue, -fValue, fValue); //1
-	vector3 point2(fValue, fValue, fValue); //2
-	vector3 point3(-fValue, fValue, fValue); //3
+	
+	float degree = (360.0 / static_cast<float>(a_nSubdivisions)) * PI / 180;
 
-	AddQuad(point0, point1, point3, point2);
+	for (int i = 0; i < a_nSubdivisions; i++) {
+		vector3 innerTL(cos(degree * i) * a_fInnerRadius, a_fHeight, sin(degree * i) * a_fInnerRadius);
+		vector3 innerTR(cos(degree * (i+1)) * a_fInnerRadius, a_fHeight, sin(degree * (i+1)) * a_fInnerRadius);
+		vector3 innerBL(cos(degree * i) * a_fInnerRadius, 0, sin(degree * i) * a_fInnerRadius);
+		vector3 innerBR(cos(degree * (i + 1)) * a_fInnerRadius, 0, sin(degree * (i + 1)) * a_fInnerRadius);
+
+		vector3 outerTL(cos(degree * i) * a_fOuterRadius, a_fHeight, sin(degree * i) * a_fOuterRadius);
+		vector3 outerTR(cos(degree * (i + 1)) * a_fOuterRadius, a_fHeight, sin(degree * (i + 1)) * a_fOuterRadius);
+		vector3 outerBL(cos(degree * i) * a_fOuterRadius, 0, sin(degree * i) * a_fOuterRadius);
+		vector3 outerBR(cos(degree * (i + 1)) * a_fOuterRadius, 0, sin(degree * (i + 1)) * a_fOuterRadius);
+
+
+		AddQuad(outerTR, outerTL, innerTR, innerTL);
+		AddQuad(innerBR, innerBL, outerBR, outerBL);
+		AddQuad(outerBR, outerBL, outerTR, outerTL);
+		AddQuad(innerBL, innerBR, innerTL, innerTR);
+	}
 
 	//Your code ends here
 	CompileObject(a_v3Color);
@@ -240,16 +250,26 @@ void MyPrimitive::GenerateSphere(float a_fRadius, int a_nSubdivisions, vector3 a
 	Init();
 
 	//Your code starts here
-	float fValue = 0.5f;
-	//3--2
-	//|  |
-	//0--1
-	vector3 point0(-fValue, -fValue, fValue); //0
-	vector3 point1(fValue, -fValue, fValue); //1
-	vector3 point2(fValue, fValue, fValue); //2
-	vector3 point3(-fValue, fValue, fValue); //3
+	
+	vector3 base(0, 0, 0);
+	vector3 peak(0, a_fRadius * 2, 0);
+	vector3 center(0, a_fRadius, 0);
 
-	AddQuad(point0, point1, point3, point2);
+	float degree = (360.0 / static_cast<float>(a_nSubdivisions)) * PI / 180;
+
+	for (int i = 0; i < a_nSubdivisions; i++) {
+		float currentH = cos(degree * i) * a_fRadius;
+		if (i == 0) {
+			vector3 point1();
+
+			
+		}
+
+		for (int j = 0; j < a_nSubdivisions; j++) {
+
+
+		}
+	}
 
 	//Your code ends here
 	CompileObject(a_v3Color);
