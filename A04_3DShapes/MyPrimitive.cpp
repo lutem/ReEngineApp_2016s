@@ -221,16 +221,27 @@ void MyPrimitive::GenerateTorus(float a_fOuterRadius, float a_fInnerRadius, int 
 	Init();
 
 	//Your code starts here
-	float fValue = 0.5f;
-	//3--2
-	//|  |
-	//0--1
-	vector3 point0(-fValue, -fValue, fValue); //0
-	vector3 point1(fValue, -fValue, fValue); //1
-	vector3 point2(fValue, fValue, fValue); //2
-	vector3 point3(-fValue, fValue, fValue); //3
+	
+	// not finished, some differences between word doc and given constructor
+	float degree = (360.0 / static_cast<float>(a_nSubdivisionsA)) * PI / 180;
 
-	AddQuad(point0, point1, point3, point2);
+	for (int i = 0; i < a_nSubdivisionsA; i++) {
+		vector3 innerTL(cos(degree * i) * a_fInnerRadius, 0, sin(degree * i) * a_fInnerRadius);
+		vector3 innerTR(cos(degree * (i + 1)) * a_fInnerRadius, 0, sin(degree * (i + 1)) * a_fInnerRadius);
+		vector3 innerBL(cos(degree * i) * a_fInnerRadius, 0, sin(degree * i) * a_fInnerRadius);
+		vector3 innerBR(cos(degree * (i + 1)) * a_fInnerRadius, 0, sin(degree * (i + 1)) * a_fInnerRadius);
+
+		vector3 outerTL(cos(degree * i) * a_fOuterRadius, 0, sin(degree * i) * a_fOuterRadius);
+		vector3 outerTR(cos(degree * (i + 1)) * a_fOuterRadius, 0, sin(degree * (i + 1)) * a_fOuterRadius);
+		vector3 outerBL(cos(degree * i) * a_fOuterRadius, 0, sin(degree * i) * a_fOuterRadius);
+		vector3 outerBR(cos(degree * (i + 1)) * a_fOuterRadius, 0, sin(degree * (i + 1)) * a_fOuterRadius);
+
+
+		AddQuad(outerTR, outerTL, innerTR, innerTL);
+		AddQuad(innerBR, innerBL, outerBR, outerBL);
+		AddQuad(outerBR, outerBL, outerTR, outerTL);
+		AddQuad(innerBL, innerBR, innerTL, innerTR);
+	}
 
 	//Your code ends here
 	CompileObject(a_v3Color);
@@ -253,22 +264,31 @@ void MyPrimitive::GenerateSphere(float a_fRadius, int a_nSubdivisions, vector3 a
 	
 	vector3 base(0, 0, 0);
 	vector3 peak(0, a_fRadius * 2, 0);
-	vector3 center(0, a_fRadius, 0);
 
 	float degree = (360.0 / static_cast<float>(a_nSubdivisions)) * PI / 180;
 
-	for (int i = 0; i < a_nSubdivisions; i++) {
-		float currentH = cos(degree * i) * a_fRadius;
-		if (i == 0) {
-			vector3 point1();
+	// height loop
+	
 
-			
-		}
+		// needs reordering to be drawn correctly
+		for (int i = 0; i < a_nSubdivisions; i++) {
 
-		for (int j = 0; j < a_nSubdivisions; j++) {
+			for (int h = 0; h < a_nSubdivisions; h++) {
+				float currentH = a_fRadius + sin(degree * h);
+				float nextH = a_fRadius + sin(degree * (h + 1));
+				float currentR = sin(acos(currentH - a_fRadius));
+				float nextR = sin(acos(nextH - a_fRadius));
 
+				vector3 point1(cos(degree * i) * currentR, currentH, sin(degree * i) * currentR);
+				vector3 point2(cos(degree * (i + 1)) * currentR, currentH, sin(degree * (i + 1)) * currentR);
 
-		}
+				vector3 point3(cos(degree * i) * nextR, nextH, sin(degree * i) * nextR);
+				vector3 point4(cos(degree * (i + 1)) * nextR, nextH, sin(degree * (i + 1)) * nextR);
+
+				AddQuad(point1, point2, point3, point4);
+				AddTri(base, point1, point2);
+				AddTri(point1, peak, point2);
+			}
 	}
 
 	//Your code ends here

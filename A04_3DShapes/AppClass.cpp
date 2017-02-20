@@ -11,8 +11,8 @@ void AppClass::InitVariables(void)
 	//m_pPrimitive->GenerateCube(1.0f, REWHITE);
 	//m_pPrimitive->GenerateCone(0.6f, 1.5f, 15, REGREEN);
 	//m_pPrimitive->GenerateCylinder(0.6f, 2.0f, 10, REBLUE);
-	m_pPrimitive->GenerateTube(1.0f, 0.7f, 2.0f, 10, REYELLOW);
-	//m_pPrimitive->GenerateSphere(1.0f, 3, RERED);
+	//m_pPrimitive->GenerateTube(1.0f, 0.7f, 2.0f, 10, REYELLOW);
+	m_pPrimitive->GenerateSphere(1.0f, 3, RERED);
 }
 
 void AppClass::Update(void)
