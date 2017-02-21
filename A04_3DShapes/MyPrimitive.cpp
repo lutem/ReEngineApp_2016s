@@ -271,23 +271,35 @@ void MyPrimitive::GenerateSphere(float a_fRadius, int a_nSubdivisions, vector3 a
 	
 
 		// needs reordering to be drawn correctly
-		for (int i = 0; i < a_nSubdivisions; i++) {
 
-			for (int h = 0; h < a_nSubdivisions; h++) {
-				float currentH = a_fRadius + sin(degree * h);
-				float nextH = a_fRadius + sin(degree * (h + 1));
-				float currentR = sin(acos(currentH - a_fRadius));
-				float nextR = sin(acos(nextH - a_fRadius));
+		for (int h = 0; h < a_nSubdivisions; h++) {
 
-				vector3 point1(cos(degree * i) * currentR, currentH, sin(degree * i) * currentR);
-				vector3 point2(cos(degree * (i + 1)) * currentR, currentH, sin(degree * (i + 1)) * currentR);
+			float currentH = a_fRadius + sin(degree);
+			float currentR = sin(acos(currentH - a_fRadius));
 
-				vector3 point3(cos(degree * i) * nextR, nextH, sin(degree * i) * nextR);
-				vector3 point4(cos(degree * (i + 1)) * nextR, nextH, sin(degree * (i + 1)) * nextR);
+			vector3 point1(cos(degree * h) * currentR, currentH, sin(degree * h) * currentR);
+			vector3 point2(cos(degree * (h + 1)) * currentR, currentH, sin(degree * (h + 1)) * currentR);
 
-				AddQuad(point1, point2, point3, point4);
-				AddTri(base, point1, point2);
-				AddTri(point1, peak, point2);
+			currentH = a_fRadius + sin(PI - degree);
+
+			vector3 point3(cos(degree * h) * currentR, currentH, sin(degree * h) * currentR);
+			vector3 point4(cos(degree * (h + 1)) * currentR, currentH, sin(degree * (h + 1)) * currentR);
+
+			AddTri(point1, peak, point2);
+			AddTri(base, point3, point4);
+
+			for (int i = 1; i < a_nSubdivisions - 1; i++) {
+				currentH = a_fRadius + sin(degree * i);
+				int nextH = a_fRadius + sin(degree * (i + 1));
+				currentR = sin(acos(currentH - a_fRadius));
+				int nextR = sin(acos(nextH - a_fRadius));
+				
+				vector3 point5(cos(degree * h) * currentR, currentH, sin(degree * h) * currentR);
+				vector3 point6(cos(degree * (h + 1)) * currentR, currentH, sin(degree * (h + 1)) * currentR);
+				vector3 point7(cos(degree * h) * nextR, nextH, sin(degree * h) * nextR);
+				vector3 point8(cos(degree * (h + 1)) * nextR, nextH, sin(degree * (h + 1)) * nextR);
+				
+				AddQuad(point5, point6, point7, point8);
 			}
 	}
 
