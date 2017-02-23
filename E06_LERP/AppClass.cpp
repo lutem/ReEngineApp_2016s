@@ -17,12 +17,30 @@ void AppClass::InitVariables(void)
 	//Reset the selection to -1, -1
 	m_selection = std::pair<int, int>(-1, -1);
 	//Set the camera position
-	m_pCameraMngr->SetPositionTargetAndView(
-		vector3(0.0f, 2.5f, 15.0f),//Camera position
-		vector3(0.0f, 2.5f, 0.0f),//What Im looking at
-		REAXISY);//What is up
+	/*m_pCameraMngr->SetPositionTargetAndView(
+		vector3(0.0f, 0.0f, 35.0f),//Camera position
+		vector3(0.0f, 0.0f, 0.0f),//What Im looking at
+		REAXISY);//What is up*/
 	//Load a model onto the Mesh manager
-	m_pMeshMngr->LoadModel("Lego\\Unikitty.bto", "Unikitty");
+	//m_pMeshMngr->LoadModel("Lego\\Unikitty.bto", "Unikitty");
+
+	m_pCameraMngr->SetPosition(vector3(0.0f, 0.0f, 35.0f));
+
+	srand(time(NULL));
+	m_nObjects = rand() % 23 + 5;
+
+	vector3 v3Start = vector3(-m_nObjects, 0.0f, 0.0f);
+	vector3 v3End = vector3(m_nObjects, 0.0f, 0.0f);
+
+	m_pSphere = new PrimitiveClass[m_nObjects];
+	m_pMatrix = new matrix4[m_nObjects];
+
+	for (int i = 0; i < m_nObjects; i++) {
+		float fPercent = MapValue(static_cast<float>(i), 0.0f, static_cast<float>(m_nObjects), 0.0f, 1.0f);
+
+		m_pSphere[i].GenerateSphere(2, 5, vector3(fPercent, 0.0f, 0.0f));
+		m_pMatrix[i] = glm::translate(IDENTITY_M4, v3End + v3Start*fPercent);
+	}
 }
 
 void AppClass::Update(void)
@@ -44,8 +62,8 @@ void AppClass::Update(void)
 	m_pMeshMngr->SetModelMatrix(ToMatrix4(m_qArcBall), 0);
 	
 	//Adds all loaded instance to the render list
-	m_pMeshMngr->AddSkyboxToRenderList();
-	m_pMeshMngr->AddInstanceToRenderList("ALL");
+	//m_pMeshMngr->AddSkyboxToRenderList();
+	//m_pMeshMngr->AddInstanceToRenderList("ALL");
 
 	//Indicate the FPS
 	int nFPS = m_pSystem->GetFPS();
@@ -63,6 +81,13 @@ void AppClass::Update(void)
 
 void AppClass::Display(void)
 {
+	matrix4 m4Projection = m_pCameraMngr->GetProjectionMatrix();
+	matrix4 m4View = m_pCameraMngr->GetViewMatrix();
+
+	for (int i = 0; i < m_nObjects; i++) {
+		m_pSphere[i].Render(m4Projection, m4View, m_pMatrix[i]);
+	}
+
 	//clear the screen
 	ClearScreen();
 	//Render the grid based on the camera's mode:
@@ -70,9 +95,13 @@ void AppClass::Display(void)
 	m_pMeshMngr->Render(); //renders the render list
 	m_pMeshMngr->ClearRenderList(); //Reset the Render list after render
 	m_pGLSystem->GLSwapBuffers(); //Swaps the OpenGL buffers
+
+	
 }
 
 void AppClass::Release(void)
 {
+	delete[] m_pSphere;
+	delete[] m_pMatrix;
 	super::Release(); //release the memory of the inherited fields
 }
