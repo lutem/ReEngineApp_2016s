@@ -199,7 +199,7 @@ void MyMesh::Render(matrix4 a_mProjection, matrix4 a_mView, matrix4 a_mWorld)
 	glUniform3f(WireColor, -1, -1, -1);
 	glDrawArrays(GL_TRIANGLES, 0, m_uVertexCount);
 
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	glUniform3f(WireColor, 1 - m_lVertexCol[0].r, 1 - m_lVertexCol[0].g, 1 - m_lVertexCol[0].b);
 	glDrawArrays(GL_TRIANGLES, 0, m_uVertexCount);
 
