@@ -36,7 +36,56 @@ void AppClass::Update(void)
 #pragma endregion
 
 #pragma region Your Code goes here
-	m_pMeshMngr->SetModelMatrix(IDENTITY_M4, "WallEye");
+	//m_pMeshMngr->SetModelMatrix(IDENTITY_M4, "WallEye");
+
+	vector3 loc[11] = {
+		vector3(-4.0f,-2.0f, 5.0f),
+		vector3(1.0f,-2.0f, 5.0f),
+		vector3(-3.0f,-1.0f, 3.0f),
+		vector3(2.0f,-1.0f, 3.0f),
+		vector3(-2.0f, 0.0f, 0.0f),
+		vector3(3.0f, 0.0f, 0.0f),
+		vector3(-1.0f, 1.0f,-3.0f),
+		vector3(4.0f, 1.0f,-3.0f),
+		vector3(0.0f, 2.0f,-5.0f),
+		vector3(5.0f, 2.0f,-5.0f),
+		vector3(1.0f, 3.0f,-5.0f)
+	};
+
+	static DWORD timeSinceBoot = GetTickCount(); // time since computer boot
+	DWORD timeSinceStart = GetTickCount() - timeSinceBoot; // time since program start
+	float fTimer = timeSinceStart / 1000.0f;
+
+	m_pMeshMngr->Print("\nTime: ");
+	m_pMeshMngr->PrintLine(std::to_string(fTimer));
+
+	static int currentIndex = 0;
+
+	// FIX
+	vector3 v3Start = loc[currentIndex];
+	vector3 v3End = loc[currentIndex +1];
+
+	// FIX
+	float fPercentage = MapValue(fTimer, 0.0f, 5.0f, 0.0f, 1.0f);
+	while (fPercentage >= 1.0f) {
+		fPercentage--;
+	}
+	if (fPercentage == 0.0f) {
+		if (currentIndex != 10) {
+			v3End = loc[currentIndex + 1];
+			currentIndex++;
+		}
+		else {
+			v3End = loc[0];
+			currentIndex = 0;
+		}
+	}
+	//
+	
+	vector3 v3Current = glm::lerp(v3Start, v3End, fPercentage);
+
+	matrix4 modelPos = glm::translate(v3Current);
+	m_pMeshMngr->SetModelMatrix(modelPos, "WallEye");
 #pragma endregion
 
 #pragma region Does not need changes but feel free to change anything here
