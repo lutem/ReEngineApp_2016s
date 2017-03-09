@@ -61,26 +61,20 @@ void AppClass::Update(void)
 
 	static int currentIndex = 0;
 
-	// FIX
-	vector3 v3Start = loc[currentIndex];
-	vector3 v3End = loc[currentIndex +1];
+	float fPercentage = MapValue(fTimer, 0.0f, 1.5f, 0.0f, 1.0f);
 
-	// FIX
-	float fPercentage = MapValue(fTimer, 0.0f, 5.0f, 0.0f, 1.0f);
+	currentIndex = (int)floor(fPercentage) % 11;
+	vector3 v3Start = loc[currentIndex];
+	vector3 v3End;
+	if (currentIndex != 10) {
+		v3End = loc[currentIndex + 1];
+	}
+	else {
+		v3End = loc[0];
+	}
 	while (fPercentage >= 1.0f) {
 		fPercentage--;
 	}
-	if (fPercentage == 0.0f) {
-		if (currentIndex != 10) {
-			v3End = loc[currentIndex + 1];
-			currentIndex++;
-		}
-		else {
-			v3End = loc[0];
-			currentIndex = 0;
-		}
-	}
-	//
 	
 	vector3 v3Current = glm::lerp(v3Start, v3End, fPercentage);
 
