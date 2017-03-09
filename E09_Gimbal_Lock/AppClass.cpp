@@ -26,9 +26,19 @@ void AppClass::Update(void)
 		CameraRotation();
 
 	//Rotation matrices
+	/*static float fTimer = 0.0f;
+	fTimer += m_pSystem->LapClock();
+
+	quaternion q1 = glm::angleAxis(90.0f, vector3(1.0f, 0.0f, 0.0f));
+	quaternion q2 = glm::angleAxis(90.0f, vector3(0.0f, 1.0f, 0.0f));
+	quaternion q3 = glm::mix(q1, q2, fTimer);*/
+
+	//m_pMeshMngr->SetModelMatrix(glm::toMat4(q3), "Steve");
+
 	matrix4 rotX = glm::rotate(IDENTITY_M4, m_v3Orientation.x, REAXISX);
 	matrix4 rotY = glm::rotate(IDENTITY_M4, m_v3Orientation.y, REAXISY);
 	matrix4 rotZ = glm::rotate(IDENTITY_M4, m_v3Orientation.z, REAXISZ);
+
 
 	//linear combination
 	m_mToWorld = rotX * rotY * rotZ;
