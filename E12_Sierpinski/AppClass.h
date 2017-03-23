@@ -49,6 +49,9 @@ public:
 	*/
 	virtual void InitVariables(void);
 
+	// draw sierpinski triangles
+	virtual void DrawTri(int iter, vector3 p1, vector3 p2, vector3 p3);
+
 	/*
 	Update
 	Updates the scene

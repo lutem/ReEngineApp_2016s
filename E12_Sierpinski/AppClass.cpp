@@ -12,8 +12,10 @@ void AppClass::InitVariables(void)
 
 	m_pMesh = new MyMesh();
 	
+	DrawTri(4, vector3(0.0f, 1.0f, 0.0f), vector3(-1.0f, 0.0f, 0.0f), vector3(1.0f, 0.0f,0.0f));
+
 	//Creating the Mesh points
-	m_pMesh->AddVertexPosition(vector3(-1.0f, -1.0f, 0.0f));
+	/*m_pMesh->AddVertexPosition(vector3(-1.0f, -1.0f, 0.0f));
 	m_pMesh->AddVertexColor(RERED);
 	m_pMesh->AddVertexPosition(vector3( 1.0f, -1.0f, 0.0f));
 	m_pMesh->AddVertexColor(RERED);
@@ -24,10 +26,45 @@ void AppClass::InitVariables(void)
 	m_pMesh->AddVertexPosition(vector3(1.0f, -1.0f, 0.0f));
 	m_pMesh->AddVertexColor(REBLUE);
 	m_pMesh->AddVertexPosition(vector3( 1.0f, 1.0f, 0.0f));
-	m_pMesh->AddVertexColor(REBLUE);
+	m_pMesh->AddVertexColor(REBLUE);*/
 
 	//Compiling the mesh
 	m_pMesh->CompileOpenGL3X();
+}
+
+void AppClass::DrawTri(int iter, vector3 p1, vector3 p2, vector3 p3) {
+	iter--;
+	vector3 c12, c13, c23;
+	c12 = vector3((p1.x + p2.x / 2), (p1.y + p2.y) / 2, (p1.z + p2.z) / 2);
+	c13 = vector3((p1.x + p3.x / 2), (p1.y + p3.y) / 2, (p1.z + p3.z) / 2);
+	c23 = vector3((p2.x + p3.x / 2), (p2.y + p3.y) / 2, (p2.z + p3.z) / 2);
+	
+	if (iter != 1) {
+		DrawTri(iter, p1, c12, c13);
+		DrawTri(iter, c12, p2, c23);
+		DrawTri(iter, c13, c23, p3);
+	}
+	else {
+		m_pMesh->AddVertexPosition(p1);
+		m_pMesh->AddVertexColor(RERED);
+		m_pMesh->AddVertexPosition(c12);
+		m_pMesh->AddVertexColor(REBLUE);
+		m_pMesh->AddVertexPosition(c13);
+		m_pMesh->AddVertexColor(REGREEN);
+		m_pMesh->AddVertexPosition(c12);
+		m_pMesh->AddVertexColor(RERED);
+		m_pMesh->AddVertexPosition(p2);
+		m_pMesh->AddVertexColor(REBLUE);
+		m_pMesh->AddVertexPosition(c23);
+		m_pMesh->AddVertexColor(REGREEN);
+		m_pMesh->AddVertexPosition(c13);
+		m_pMesh->AddVertexColor(RERED);
+		m_pMesh->AddVertexPosition(c23);
+		m_pMesh->AddVertexColor(REBLUE);
+		m_pMesh->AddVertexPosition(p3);
+		m_pMesh->AddVertexColor(REGREEN);
+	}
+
 }
 
 void AppClass::Update(void)
