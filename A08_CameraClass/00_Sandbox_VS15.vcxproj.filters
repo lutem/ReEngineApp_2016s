@@ -24,7 +24,7 @@
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CameraClass.cpp">
+    <ClCompile Include="CamClass.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
