@@ -237,3 +237,88 @@ bool MyBOClass::IsColliding(MyBOClass* const a_pOther)
 
 	return true;
 }
+
+bool MyBOClass::SepAxisTest(MyBOClass* const a_pOther) {
+
+	float zeroTest = 0.5f;
+
+	vector3 v3Corner[4];
+	v3Corner[0] = vector3(m_v3Min.x, m_v3Min.y, m_v3Min.z);
+	v3Corner[1] = vector3(m_v3Max.x, m_v3Min.y, m_v3Min.z);
+	v3Corner[2] = vector3(m_v3Min.x, m_v3Max.y, m_v3Min.z);
+
+	v3Corner[3] = vector3(m_v3Min.x, m_v3Min.y, m_v3Max.z);
+	//Get vectors in global space
+	for (uint nVertex = 0; nVertex < 4; nVertex++)
+	{
+		v3Corner[nVertex] = vector3(m_m4ToWorld * vector4(v3Corner[nVertex], 1.0f));
+	}
+
+	vector3 v3Vecs[3];
+	v3Vecs[0] = v3Corner[1] - v3Corner[0];
+	v3Vecs[1] = v3Corner[2] - v3Corner[0];
+	v3Vecs[2] = v3Corner[3] - v3Corner[0];
+
+	vector3 crossXY = glm::cross(v3Vecs[0], v3Vecs[1]);
+	vector3 crossXZ = glm::cross(v3Vecs[0], v3Vecs[2]);
+	vector3 crossYZ = glm::cross(v3Vecs[1], v3Vecs[2]);
+
+	// other object axes
+	vector3 v3CornerO[4];
+	v3CornerO[0] = vector3(a_pOther->m_v3Min.x, a_pOther->m_v3Min.y, a_pOther->m_v3Min.z);
+	v3CornerO[1] = vector3(a_pOther->m_v3Max.x, a_pOther->m_v3Min.y, a_pOther->m_v3Min.z);
+	v3CornerO[2] = vector3(a_pOther->m_v3Min.x, a_pOther->m_v3Max.y, a_pOther->m_v3Min.z);
+
+	v3CornerO[3] = vector3(a_pOther->m_v3Min.x, a_pOther->m_v3Min.y, a_pOther->m_v3Max.z);
+	//Get vectors in global space
+	for (uint nVertex = 0; nVertex < 4; nVertex++)
+	{
+		v3CornerO[nVertex] = vector3(a_pOther->m_m4ToWorld * vector4(v3CornerO[nVertex], 1.0f));
+	}
+
+	vector3 v3VecsO[3];
+	v3VecsO[0] = v3CornerO[1] - v3CornerO[0];
+	v3VecsO[1] = v3CornerO[2] - v3CornerO[0];
+	v3VecsO[2] = v3CornerO[3] - v3CornerO[0];
+
+	vector3 crossXYO = glm::cross(v3VecsO[0], v3VecsO[1]);
+	vector3 crossXZO = glm::cross(v3VecsO[0], v3VecsO[2]);
+	vector3 crossYZO = glm::cross(v3VecsO[1], v3VecsO[2]);
+
+	if (glm::length(glm::cross(crossXY, crossXYO)) < zeroTest &&
+		glm::length(glm::cross(crossXZ, crossXZO)) < zeroTest &&
+		glm::length(glm::cross(crossYZ, crossYZO)) < zeroTest)
+	{
+		return true;
+	}
+	else if (glm::length(glm::cross(crossXY, crossXZO)) < zeroTest)
+	{
+		return true;
+	}
+	else if (glm::length(glm::cross(crossXY, crossYZO)) < zeroTest)
+	{
+		return true;
+	}
+	else if (glm::length(glm::cross(crossXZ, crossXYO)) < zeroTest)
+	{
+		return true;
+	}
+	else if (glm::length(glm::cross(crossXZ, crossYZO)) < zeroTest)
+	{
+		return true;
+	}
+	else if (glm::length(glm::cross(crossYZ, crossXYO)) < zeroTest)
+	{
+		return true;
+	}
+	else if (glm::length(glm::cross(crossYZ, crossXZO)) < zeroTest)
+	{
+		return true;
+	}
+	else {
+		return false;
+	}
+
+
+	return true;
+}

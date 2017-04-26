@@ -133,6 +133,10 @@ public:
 	OUTPUT: check of the collision
 	*/
 	bool IsColliding(MyBOClass* const a_pOther);
+
+	// OBB SAT check
+	bool SepAxisTest(MyBOClass* const other);
+
 	/*
 	USAGE: Displays the Bounding Sphere of the BO in the specified color
 	ARGUMENTS:
