@@ -16,6 +16,7 @@ class MyBOManager
 	std::vector<MyBOClass*> m_lObject; //list of AABB
 	MeshManagerSingleton* m_pMeshMngr = nullptr;//Mesh Manager Singleton
 	std::vector<std::vector<int>> m_llCollidingIndices; //List of list of colliding indices.
+	std::vector<std::vector<int>> m_llSAT; //List of list of SAT checks.
 	std::map<String, uint> m_mapIndex;//Map relating the mesh and the index
 public:
 	/*

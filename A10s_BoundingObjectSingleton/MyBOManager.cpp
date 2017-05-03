@@ -16,9 +16,11 @@ void MyBOManager::Release(void)
 			m_lObject[nObject] = nullptr;
 		}
 		m_llCollidingIndices[nObject].clear();
+		m_llSAT[nObject].clear();
 	}
 	m_lObject.clear();
 	m_llCollidingIndices.clear();
+	m_llSAT.clear();
 }
 MyBOManager* MyBOManager::GetInstance()
 {
@@ -72,6 +74,7 @@ void MyBOManager::AddObject(std::vector<vector3> a_lVertex, String a_sName)
 	m_nObjectCount = m_lObject.size();
 	std::vector<int> lVector;
 	m_llCollidingIndices.push_back(lVector);
+	m_llSAT.push_back(lVector);
 }
 void MyBOManager::SetModelMatrix(matrix4 a_mModelMatrix, String a_sIndex)
 {
@@ -101,8 +104,14 @@ void MyBOManager::DisplaySphere(int a_nIndex, vector3 a_v3Color)
 		if (v3Color == REDEFAULT)
 		{
 			v3Color = REWHITE;
-			if (m_llCollidingIndices[a_nIndex].size() > 0)
-				v3Color = RERED;
+			if (m_llCollidingIndices[a_nIndex].size() > 0) {
+				if (m_llSAT[a_nIndex].size() > 0) {
+					v3Color = REGREEN;
+				}
+				else {
+					v3Color = RERED;
+				}
+			}
 		}
 		m_lObject[a_nIndex]->DisplaySphere(v3Color);
 	}
@@ -114,8 +123,14 @@ void MyBOManager::DisplaySphere(int a_nIndex, vector3 a_v3Color)
 			if (v3Color == REDEFAULT)
 			{
 				v3Color = REWHITE;
-				if (m_llCollidingIndices[nObject].size() > 0)
-					v3Color = RERED;
+				if (m_llCollidingIndices[nObject].size() > 0) {
+					if (m_llSAT[nObject].size() > 0) {
+						v3Color = REGREEN;
+					}
+					else {
+						v3Color = RERED;
+					}
+				}
 			}
 			m_lObject[nObject]->DisplaySphere(v3Color);
 			v3Color = a_v3Color;
@@ -141,8 +156,14 @@ void MyBOManager::DisplayOriented(int a_nIndex, vector3 a_v3Color)
 		if (v3Color == REDEFAULT)
 		{
 			v3Color = REWHITE;
-			if (m_llCollidingIndices[a_nIndex].size() > 0)
-				v3Color = RERED;
+			if (m_llCollidingIndices[a_nIndex].size() > 0) {
+				if (m_llSAT[a_nIndex].size() > 0) {
+					v3Color = REGREEN;
+				}
+				else {
+					v3Color = RERED;
+				}
+			}
 		}
 		m_lObject[a_nIndex]->DisplayOriented(v3Color);
 	}
@@ -154,8 +175,14 @@ void MyBOManager::DisplayOriented(int a_nIndex, vector3 a_v3Color)
 			if (v3Color == REDEFAULT)
 			{
 				v3Color = REWHITE;
-				if (m_llCollidingIndices[nObject].size() > 0)
-					v3Color = RERED;
+				if (m_llCollidingIndices[nObject].size() > 0) {
+					if (m_llSAT[nObject].size() > 0) {
+						v3Color = REGREEN;
+					}
+					else {
+						v3Color = RERED;
+					}
+				}
 			}
 			m_lObject[nObject]->DisplayOriented(v3Color);
 			v3Color = a_v3Color;
@@ -181,8 +208,14 @@ void MyBOManager::DisplayReAlligned(int a_nIndex, vector3 a_v3Color)
 		if (v3Color == REDEFAULT)
 		{
 			v3Color = REWHITE;
-			if (m_llCollidingIndices[a_nIndex].size() > 0)
-				v3Color = RERED;
+			if (m_llCollidingIndices[a_nIndex].size() > 0) {
+				if (m_llSAT[a_nIndex].size() > 0) {
+					v3Color = REGREEN;
+				}
+				else {
+					v3Color = RERED;
+				}
+			}
 		}
 		m_lObject[a_nIndex]->DisplayReAlligned(v3Color);
 	}
@@ -194,8 +227,14 @@ void MyBOManager::DisplayReAlligned(int a_nIndex, vector3 a_v3Color)
 			if (v3Color == REDEFAULT)
 			{
 				v3Color = REWHITE;
-				if (m_llCollidingIndices[nObject].size() > 0)
-					v3Color = RERED;
+				if (m_llCollidingIndices[nObject].size() > 0) {
+					if (m_llSAT[nObject].size() > 0) {
+						v3Color = REGREEN;
+					}
+					else {
+						v3Color = RERED;
+					}
+				}
 			}
 			m_lObject[nObject]->DisplayReAlligned(v3Color);
 			v3Color = a_v3Color;
@@ -207,6 +246,7 @@ void MyBOManager::Update(void)
 	for (uint nObject = 0; nObject < m_nObjectCount; nObject++)
 	{
 		m_llCollidingIndices[nObject].clear();
+		m_llSAT[nObject].clear();
 	}
 	CheckCollisions();
 }
@@ -220,6 +260,10 @@ void MyBOManager::CheckCollisions(void)
 			{
 				m_llCollidingIndices[nObjectA].push_back(nObjectB);
 				m_llCollidingIndices[nObjectB].push_back(nObjectA);
+				if (m_lObject[nObjectA]->SepAxisTest(m_lObject[nObjectB])) {
+					m_llSAT[nObjectA].push_back(nObjectB);
+					m_llSAT[nObjectB].push_back(nObjectA);
+				}
 			}
 		}
 	}
