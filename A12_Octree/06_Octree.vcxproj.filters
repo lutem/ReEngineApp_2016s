@@ -10,6 +10,12 @@
     <ClCompile Include="AppClass.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\A10s_BoundingObjectSingleton\MyBOClass.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MyBOManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AppClass.h">
@@ -17,6 +23,12 @@
     </ClInclude>
     <ClInclude Include="..\res\Resource.h">
       <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\A10s_BoundingObjectSingleton\MyBOClass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MyBOManager.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

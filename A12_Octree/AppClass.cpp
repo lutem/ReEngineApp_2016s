@@ -9,6 +9,8 @@ void AppClass::InitVariables(void)
 	//Set the camera at a position other than the default
 	m_pCameraMngr->SetPositionTargetAndView(vector3(0.0f, 2.5f, 150.0f), vector3(0.0f, 2.5f, 11.0f), REAXISY);
 
+	m_pBOMngr = MyBOManager::GetInstance();
+
 	m_nInstances = 3500;
 	int nSquare = static_cast<int>(std::sqrt(m_nInstances));
 	m_nInstances = nSquare * nSquare;
@@ -20,15 +22,13 @@ void AppClass::InitVariables(void)
 			matrix4 m4Positions = glm::translate(static_cast<float>(i - nSquare / 2.0f), static_cast<float>(j), 0.0f);
 			m4Positions = glm::translate(vector3(glm::sphericalRand(35.0f)));
 			m_pMeshMngr->LoadModel("Portal\\CompanionCube.bto", sInstance, false, m4Positions);
+			m_pBOMngr->AddObject(m_pMeshMngr->GetVertexList(sInstance), sInstance);
 		}
 	}
 
 	//for (int n = 0; n < 25; n++)
 	//	m_pMeshMngr->LoadModel("Minecraft\\Steve.ato", "Plane", false, glm::translate(vector3(-n, -n, 0)));
 
-	SafeDelete(m_pRoot);
-	m_pRoot = new OctantClass(3, 3);
-	
 	m_v3ClickedOn = ZERO_V3;
 }
 
@@ -39,6 +39,21 @@ void AppClass::Update(void)
 
 	//Update the mesh manager's time without updating for collision detection
 	m_pMeshMngr->Update();
+	
+		for (int i = 0; i < static_cast<int>(std::sqrt(m_nInstances)); i++)
+		{
+			for (int j = 0; j < static_cast<int>(std::sqrt(m_nInstances)); j++)
+			{
+				String sInstance = "Cube_" + std::to_string(i) + "_" + std::to_string(j);
+				m_pBOMngr->SetModelMatrix(m_pMeshMngr->GetModelMatrix(sInstance), sInstance);
+			}
+		}
+	
+	m_pBOMngr->Update();
+
+	if(m_pBOMngr->bounding)
+	m_pBOMngr->DisplayReAlligned();
+	
 
 	//First person camera movement
 	if (m_bFPC == true)
@@ -52,8 +67,6 @@ void AppClass::Update(void)
 
 	//m_pMeshMngr->SetVisibleBO(REBODISPLAY::BD_NONE, "ALL", true);
 	//m_pMeshMngr->m_pModelMngr->CheckCollisions(BD_OB);
-	m_pRoot->CheckCollisions();
-	m_pRoot->DisplayLeafs();
 
 	//m_pMeshMngr->SetVisibleAxis(true, "ALL", true);
 
@@ -70,12 +83,26 @@ void AppClass::Update(void)
 
 	m_pMeshMngr->Print("FPS:");
 	m_pMeshMngr->Print(std::to_string(nFPS), RERED);
+
+	m_pMeshMngr->PrintLine("");
+	m_pMeshMngr->Print("Display Bounding:");
+	m_pMeshMngr->Print(std::to_string(m_pBOMngr->bounding), RERED);
+
+	m_pMeshMngr->PrintLine("");
+	m_pMeshMngr->Print("Using Brute Force:");
+	m_pMeshMngr->Print(std::to_string(m_pBOMngr->brute), RERED);
+
+	m_pMeshMngr->PrintLine("");
+	m_pMeshMngr->Print("Using Optimized:");
+	m_pMeshMngr->Print(std::to_string(m_pBOMngr->sOptimize), RERED);
 }
 
 void AppClass::Display(void)
 {
 	//clear the screen
 	ClearScreen();
+
+
 	//Render the grid based on the camera's mode:
 	m_pMeshMngr->AddGridToRenderListBasedOnCamera(m_pCameraMngr->GetCameraMode());
 	m_pMeshMngr->Render(); //renders the render list
@@ -85,6 +112,5 @@ void AppClass::Display(void)
 
 void AppClass::Release(void)
 {
-	SafeDelete(m_pRoot);
 	super::Release(); //release the memory of the inherited fields
 }

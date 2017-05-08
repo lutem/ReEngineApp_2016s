@@ -18,13 +18,10 @@ class MyBOManager
 	std::vector<std::vector<int>> m_llCollidingIndices; //List of list of colliding indices.
 	std::map<String, uint> m_mapIndex;//Map relating the mesh and the index
 public:
+	//booleans for toggling between each of the checks and if bounding boxes should be drawn 
 	bool brute;
-	bool getBrute();
-	void setBrute(bool val);
-
 	bool bounding;
-	bool getBounding();
-	void setBounding(bool val);
+	bool sOptimize;
 
 	/*
 	USAGE: Gets the static instance of the class

@@ -41,6 +41,21 @@ void AppClass::ProcessKeyboard(void)
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
 		m_pCameraMngr->MoveVertical(fSpeed);
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::T))
+	{
+		m_pBOMngr->brute = !m_pBOMngr->brute;
+		m_pBOMngr->sOptimize = !m_pBOMngr->sOptimize;
+		//std::cout << m_pBOMngr->brute << std::endl;
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::G))
+	{
+		m_pBOMngr->bounding = !m_pBOMngr->bounding;
+		//std::cout << m_pBOMngr->bounding << std::endl;
+	}
+
+	
 #pragma endregion
 
 #pragma region Model Positioning

@@ -11,9 +11,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{0488FE50-85CC-477A-88ED-0A00B9F79F5D}</ProjectGuid>
+    <ProjectGuid>{152B616A-9C80-4C98-B140-53C5075BE7E6}</ProjectGuid>
     <RootNamespace>06_Octree</RootNamespace>
-    <ProjectName>06_Octree</ProjectName>
+    <ProjectName>A12_Octree</ProjectName>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -105,13 +105,17 @@ xcopy "$(SolutionDir)include\RE\Shaders" "$(SolutionDir)_Binary\Shaders" /y</Com
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\A10s_BoundingObjectSingleton\MyBOClass.cpp" />
     <ClCompile Include="AppClass.cpp" />
     <ClCompile Include="AppClassControls.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="MyBOManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\A10s_BoundingObjectSingleton\MyBOClass.h" />
     <ClInclude Include="..\res\Resource.h" />
     <ClInclude Include="AppClass.h" />
+    <ClInclude Include="MyBOManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\res\BTO.rc" />

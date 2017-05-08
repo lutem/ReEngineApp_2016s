@@ -6,7 +6,8 @@ void MyBOManager::Init(void)
 	m_pMeshMngr = MeshManagerSingleton::GetInstance();
 	m_nObjectCount = 0;
 	brute = true;
-	bounding = true;
+	bounding = false;
+	sOptimize = !brute;
 }
 void MyBOManager::Release(void)
 {
@@ -230,6 +231,7 @@ void MyBOManager::Update(void)
 	}
 	// our spacial optimization collision check
 	else {
+		//TO-DO: pseudocode and flesh out
 
 	}
 }
@@ -276,16 +278,4 @@ int MyBOManager::GetIndex(String a_sIndex)
 	return var->second;//Get the index
 }
 
-bool MyBOManager::getBrute() {
-	return brute;
-}
-void MyBOManager::setBrute(bool val) {
-	brute = val;
-}
 
-bool MyBOManager::getBounding() {
-	return bounding;
-}
-void MyBOManager::setBounding(bool val) {
-	bounding = val;
-}

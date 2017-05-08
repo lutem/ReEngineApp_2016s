@@ -7,6 +7,7 @@ Date: 2015/09 (Last Modified on: 15/11)
 
 #include "RE\ReEngAppClass.h"
 #include <SFML\Graphics.hpp>
+#include "MyBOManager.h"
 
 using namespace ReEng; //Using ReEng namespace to use all the classes in the dll
 
@@ -17,7 +18,8 @@ class AppClass : public ReEngAppClass
 	matrix4 m_m4Model;
 	vector3 m_v3ClickedOn = ZERO_V3;
 	matrix4 m_m4Camera;
-	OctantClass* m_pRoot;
+	MyBOManager* m_pBOMngr;
+
 public:
 	typedef ReEngAppClass super;
 
