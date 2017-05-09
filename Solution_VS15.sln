@@ -115,6 +115,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "E14_CollisionResolution", "
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "A12_Octree", "\\banner.main.ad.rit.edu\students\sxl4023\IGMProfile\Documents\ReEngineApp_2016s\A12_Octree\06_Octree.vcxproj", "{152B616A-9C80-4C98-B140-53C5075BE7E6}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "E15_Bullet", "\\banner.main.ad.rit.edu\students\sxl4023\IGMProfile\Documents\ReEngineApp_2016s\E15_Bullet\00_Sandbox_VS15.vcxproj", "{F50ACD4A-1EA0-4950-968E-D80C674452D2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -313,6 +315,10 @@ Global
 		{152B616A-9C80-4C98-B140-53C5075BE7E6}.Debug|x86.Build.0 = Debug|Win32
 		{152B616A-9C80-4C98-B140-53C5075BE7E6}.Release|x86.ActiveCfg = Release|Win32
 		{152B616A-9C80-4C98-B140-53C5075BE7E6}.Release|x86.Build.0 = Release|Win32
+		{F50ACD4A-1EA0-4950-968E-D80C674452D2}.Debug|x86.ActiveCfg = Debug|Win32
+		{F50ACD4A-1EA0-4950-968E-D80C674452D2}.Debug|x86.Build.0 = Debug|Win32
+		{F50ACD4A-1EA0-4950-968E-D80C674452D2}.Release|x86.ActiveCfg = Release|Win32
+		{F50ACD4A-1EA0-4950-968E-D80C674452D2}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -366,5 +372,6 @@ Global
 		{AD27F8DF-F8E8-428B-9ABF-391FC128CD5C} = {2D1B6711-5C2F-40D1-81B0-C84AEDAA4353}
 		{08298E13-200D-4DB2-B7BA-EFE97509F814} = {0B1C8EE7-E852-45B2-A546-BE37B521048A}
 		{152B616A-9C80-4C98-B140-53C5075BE7E6} = {124C8EDD-52BA-4EAA-A1F4-6D4302AB5DEC}
+		{F50ACD4A-1EA0-4950-968E-D80C674452D2} = {0B1C8EE7-E852-45B2-A546-BE37B521048A}
 	EndGlobalSection
 EndGlobal
